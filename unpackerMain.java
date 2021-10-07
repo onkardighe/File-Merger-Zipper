@@ -1,5 +1,7 @@
 import java.io.*;
 import java.lang.*;
+import javax.swing.*;
+import javax.swing.JFileChooser;
 
 public class unpackerMain 
 {
@@ -12,6 +14,7 @@ public class unpackerMain
     public static void main(String[] args)  throws Exception
     {
         unpackerMain obj = new unpackerMain();
+        // FileExporer FileExporerObj = new FileExporer();
     }
 
 
@@ -23,7 +26,10 @@ public class unpackerMain
             emptyInput();
             return;
         }
-        unpackFile(srcFile);
+        else
+        {
+            unpackFile(srcFile);
+        }
     }
 
 
@@ -51,8 +57,6 @@ public class unpackerMain
 
         }
         int offset = 0;
-
-
 
         while(offset < fileString.length())
         {
@@ -144,4 +148,20 @@ class FileAttributes
         fileName = name;
         fileSize = iSize;
     }
+}
+
+
+
+// this class used for getting input file with the help of default File Explorer
+class FileExporer
+{
+    public FileExporer()
+    {
+        final JFileChooser  fc = new JFileChooser("./");
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        int retVal = fc.showOpenDialog(null);
+        System.out.println(retVal);
+
+    }
+    
 }

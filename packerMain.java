@@ -8,7 +8,7 @@ public class packerMain {
     //Basic Values & Can be changed anytime
     private static String src = "./files";
     private static String dest = "./output";
-    private static String outputFileName = "output";
+    private static String outputFileName = "onkar";
     private static String extn[] = {".txt",".java",".c",".cpp",".py"};
 
     public static void main(String[] args) throws Exception
