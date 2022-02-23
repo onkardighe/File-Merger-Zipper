@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-
-
 public class landing {
 
     public static void main(String[] args) throws Exception {
@@ -16,50 +14,123 @@ public class landing {
 
 class landingMain extends JFrame implements ActionListener
 {
+    Dimension onePanelDimension = new Dimension(350,660);
+    Dimension twoPanelDimension = new Dimension(700,660);
+    Dimension threePanelDimension = new Dimension(1050,660);
+    Dimension currentPanelDimension;
+
     JButton menuButton;
 
     JPanel menuHeaderPanelObj = new JPanel();
     JPanel packerHeaderPanelObj = new JPanel();
     JPanel menuPanelObj = new JPanel();
-    JPanel packerPanelObj = new JPanel();
+    JPanel packerPanelObj;
+    JPanel viewerPanelObj = new JPanel();
+    JPanel viewerHeaderPanel;
+    JPanel proceedButtonPanel;
     JPanel menuPanelPack,menuPanelUnpack,menuPanelRecents,menuPanelSettings;
 
     private ImageIcon menuIcon, menuPackIcon,menuUnpackIcon, recentsIcon, settingsIcon;
 
-    JLabel menuHeaderLabel;
+    JLabel menuHeaderLabel, packerHeaderLabel;
     Font font;
 
     // Buttons
     JButton menuPackIconButton, menuUnpackIconButton,menuRecentsIconButton,menuSettingsIconButton;
 
+    String data;
+
     private void addPanel() {
+
+        // Menu panel
+        menuPanelObj.setBackground(new Color(202, 62, 87, 255));
+        menuPanelObj.setBounds(0, 50, 350, 660);
+        menuPanelObj.setLayout(null);
+        add(menuPanelObj);
+
+        
+
+        // Viewer panel
+        viewerPanelObj.setBackground(new Color(202, 62, 87, 255));
+        viewerPanelObj.setBounds(700, 0, 350, 710);
+        viewerPanelObj.setLayout(null);
+
         // Menu Header Panel
-        menuHeaderPanelObj.setBackground(new Color(227, 79, 67, 255));
+        menuHeaderPanelObj.setBackground(new Color(186, 46, 73, 255));
         menuHeaderPanelObj.setBounds(0, 0, 350, 50);
         menuHeaderPanelObj.setLayout(null);
         add(menuHeaderPanelObj);
 
+        //Function to add packer panel
+        addPackerPanel();
+        addMenuPanel();
+        addViewPanel();
+    }
+
+    private void addPackerPanel()
+    {
+
+        packerPanelObj = new JPanel();
         // Packer Header Panel
         packerHeaderPanelObj.setBackground(new Color(186, 46, 73, 255));
-        packerHeaderPanelObj.setBounds(350, 0, 400, 50);
-        add(packerHeaderPanelObj);
-
-        // Menu panel
-        menuPanelObj.setBackground(new Color(202, 62, 87, 255));
-        menuPanelObj.setBounds(0, 51, 350, 660);
-        menuPanelObj.setLayout(null);
-        add(menuPanelObj);
+        packerHeaderPanelObj.setBounds(0, 0, 350, 50);
+        packerPanelObj.add(packerHeaderPanelObj);
 
         // Packer panel
         packerPanelObj.setBackground(new Color(193, 53, 78, 255));
-        packerPanelObj.setBounds(350, 50, 400, 660);
+        packerPanelObj.setBounds(350, 0, 350, 710);
+        packerPanelObj.setLayout(null);
+
+        // Created object of class GetPacker
+        // Getting packer source folder and destination - Returns object of a class extening JPanel 
+        GetPacker packfileObj = new GetPacker(this, packerPanelObj,viewerPanelObj);
+        packfileObj.setBackground(new Color(213, 134, 145, 123));
+        packfileObj.setLayout(null);
+
+        // button -- Select Folder
+        packfileObj.addInitialButtons();
+        packerPanelObj.add(packfileObj);
         add(packerPanelObj);
 
-        addMenuPanel();
+    }
+    
+    private void addViewPanel()
+    {
+        add(viewerPanelObj);
+
+        //header panel for view panel
+        viewerHeaderPanel = new JPanel();
+        viewerHeaderPanel.setBackground(new Color(186, 46, 73, 255));
+        viewerHeaderPanel.setBounds(0, 0, 350, 50);
+
+        viewerPanelObj.add(viewerHeaderPanel);
+
+        addViewerPanel();
     }
 
+
+    private void addViewerPanel() 
+    {
+        try {
+            getFonts();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        // Viewer Panel to view files
+        GetPacker viewerObj = new GetPacker(this, packerPanelObj,viewerPanelObj);
+        viewerObj.setLayout(null);
+        viewerObj.setVisible(false);
+
+        viewerObj.getDestination();
+        viewerObj.addProceedBbutton();
+
+        viewerPanelObj.add(viewerObj);
+    }
+
+
+
     private void addMenuPanel() {
-        // JPanel menuPanelPack = new JPanel();
         menuPanelPack = new RoundedPanel(10,new Color(213, 134, 145, 123));
         menuPanelUnpack = new RoundedPanel(10,new Color(213, 134, 145, 123));
         menuPanelRecents = new RoundedPanel(10,new Color(213, 134, 145, 123));
@@ -92,13 +163,22 @@ class landingMain extends JFrame implements ActionListener
 
     private void addLabel() throws Exception {
         getFonts();
-        menuHeaderLabel = new JLabel("MENU");
-        menuHeaderLabel.setBounds(10, 0, 200, 50);
+        menuHeaderLabel = new JLabel("FILE ZIPPER");
+        menuHeaderLabel.setBounds(80, 0, 200, 50);
         menuHeaderLabel.setFont(font.deriveFont(Font.BOLD, 25f));
         menuHeaderLabel.setForeground(Color.WHITE);
         menuHeaderLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        packerHeaderLabel = new JLabel("Select Files");
+        packerHeaderLabel.setBounds(80, 0, 200, 50);
+        packerHeaderLabel.setFont(font.deriveFont(Font.BOLD, 25f));
+        packerHeaderLabel.setForeground(Color.WHITE);
+        packerHeaderLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        packerHeaderPanelObj.setLayout(null);
 
         menuHeaderPanelObj.add(menuHeaderLabel);
+        packerHeaderPanelObj.add(packerHeaderLabel);
 
     }
 
@@ -169,6 +249,8 @@ class landingMain extends JFrame implements ActionListener
 
     }
 
+    // Function - parameter : ImageIcon
+                // returns object of JButton
     private JButton addIconButtons(ImageIcon icon) {
         JButton newButton = new JButton(icon);
         newButton.setOpaque(false);
@@ -181,14 +263,23 @@ class landingMain extends JFrame implements ActionListener
 
     private void addButtonActions()
     {
-
         // Menu pack Icon Button
         menuPackIconButton.addActionListener
         (
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {
-                    setSize(700,660);
+
+                    currentPanelDimension = getSize();
+                    if((currentPanelDimension.width != onePanelDimension.width) || (currentPanelDimension.height != onePanelDimension.height))
+                    {
+                        setSize(350,660);
+                    }
+                    else
+                    {
+                        setSize(700,660);
+                    }
+                    setLocationRelativeTo(null);
                 }
             }
         );
@@ -200,6 +291,7 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    setLocationRelativeTo(null);
                 }
             }
         );
@@ -211,6 +303,7 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    setLocationRelativeTo(null);
                 }
             }
         );
@@ -222,6 +315,7 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    setLocationRelativeTo(null);
                 }
             }
         );
@@ -247,51 +341,4 @@ class landingMain extends JFrame implements ActionListener
         setVisible(true);
     }
     public void actionPerformed(ActionEvent e){}
-}
-
-class RoundedPanel extends JPanel {
-    private Color backgroundColor;
-    private int cornerRadius = 15;
-
-    public RoundedPanel(LayoutManager layout, int radius) {
-        super(layout);
-        cornerRadius = radius;
-    }
-
-    public RoundedPanel(LayoutManager layout, int radius, Color bgColor) {
-        super(layout);
-        cornerRadius = radius;
-        backgroundColor = bgColor;
-    }
-
-    public RoundedPanel(int radius) {
-        super();
-        cornerRadius = radius;
-    }
-
-    public RoundedPanel(int radius, Color bgColor) {
-        super();
-        cornerRadius = radius;
-        backgroundColor = bgColor;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Dimension arcs = new Dimension(cornerRadius, cornerRadius);
-        int width = getWidth();
-        int height = getHeight();
-        Graphics2D graphics = (Graphics2D) g;
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Draws the rounded panel with borders.
-        if (backgroundColor != null) {
-            graphics.setColor(backgroundColor);
-        } else {
-            graphics.setColor(getBackground());
-        }
-        graphics.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height); // paint background
-        graphics.setColor(getForeground());
-        // graphics.drawRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height); // paint border
-    }
 }
