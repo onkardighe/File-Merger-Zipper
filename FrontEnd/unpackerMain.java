@@ -6,9 +6,9 @@ import javax.swing.JFileChooser;
 public class unpackerMain 
 {
     //Basic Values & Can be changed anytime
-    private static String src = "./output/output.zip";
-    private static String dest = "./";
-    private static String outputFolderName = "UnpackedFiles";
+    private static String src = "../output/onkar.zip";
+    private static String dest = "../";
+    private static String outputFolderName = "Unpacked Files";
 
 
     public static void main(String[] args)  throws Exception
@@ -63,9 +63,10 @@ public class unpackerMain
             FileAttributes fileHeaderObj = headerUnpack(fileString,offset);
             fileUnpack(fileString, fileHeaderObj, offset+100);
             offset = offset + (100+fileHeaderObj.fileSize);
-        }
+           }
 
     }
+
 
 
 
@@ -86,7 +87,6 @@ public class unpackerMain
         return new FileAttributes(headerAttributes[0],Integer.parseInt(headerAttributes[1]));
     }
 
-
 /*////////////////////////////////////////////////////////////////////
                     FUNCTION : fileUnpack
 ---------------------------------------------------------------------
@@ -103,18 +103,18 @@ PARAMETERS :
         // Check for output folder exists already
         if(!(outputFolderObj.exists()))
         {
-            boolean folderCheck = outputFolderObj.mkdirs();
-            if(folderCheck)
+ 
+            if(outputFolderObj.mkdirs())
             {
                 System.out.println("Unpack Output Folder Created");
             }
         }
 
+
         // Check for file already exists
         if(!(outFolderFile.exists()))
         {
-            boolean folderCheck = outFolderFile.createNewFile();
-            if(folderCheck)
+            if(outFolderFile.createNewFile())
             {
                 System.out.println("Unpacked file Created");
             }
@@ -130,7 +130,7 @@ PARAMETERS :
 
 
 
-
+// It's like structure in C
 // this class stores all atrributes regarding the file
 class FileAttributes
 {
