@@ -26,7 +26,7 @@ class landingMain extends JFrame implements ActionListener
     JPanel menuPanelObj = new JPanel();
     JPanel packerPanelObj;
     JPanel viewerPanelObj = new JPanel();
-    JPanel viewerHeaderPanel;
+    JPanel viewerHeaderPanel = new JPanel();
     JPanel proceedButtonPanel;
     JPanel menuPanelPack,menuPanelUnpack,menuPanelRecents,menuPanelSettings;
 
@@ -39,6 +39,7 @@ class landingMain extends JFrame implements ActionListener
     JButton menuPackIconButton, menuUnpackIconButton,menuRecentsIconButton,menuSettingsIconButton;
 
     String data;
+    JProgressBar progressBarMenu, progressBarTwo, progressBarThree;
 
     private void addPanel() {
 
@@ -83,7 +84,7 @@ class landingMain extends JFrame implements ActionListener
 
         // Created object of class GetPacker
         // Getting packer source folder and destination - Returns object of a class extening JPanel 
-        GetPacker packfileObj = new GetPacker(this, packerPanelObj,viewerPanelObj);
+        GetPacker packfileObj = new GetPacker(this,menuPanelObj,packerPanelObj,viewerPanelObj);
         packfileObj.setBackground(new Color(213, 134, 145, 123));
         packfileObj.setLayout(null);
 
@@ -99,7 +100,6 @@ class landingMain extends JFrame implements ActionListener
         add(viewerPanelObj);
 
         //header panel for view panel
-        viewerHeaderPanel = new JPanel();
         viewerHeaderPanel.setBackground(new Color(186, 46, 73, 255));
         viewerHeaderPanel.setBounds(0, 0, 350, 50);
 
@@ -118,7 +118,7 @@ class landingMain extends JFrame implements ActionListener
             System.out.println(e);
         }
         // Viewer Panel to view files
-        GetPacker viewerObj = new GetPacker(this, packerPanelObj,viewerPanelObj);
+        GetPacker viewerObj = new GetPacker(this,menuPanelObj,packerPanelObj,viewerPanelObj);
         viewerObj.setLayout(null);
         viewerObj.setVisible(false);
 
@@ -130,7 +130,8 @@ class landingMain extends JFrame implements ActionListener
 
 
 
-    private void addMenuPanel() {
+    private void addMenuPanel() 
+    {    
         menuPanelPack = new RoundedPanel(10,new Color(213, 134, 145, 123));
         menuPanelUnpack = new RoundedPanel(10,new Color(213, 134, 145, 123));
         menuPanelRecents = new RoundedPanel(10,new Color(213, 134, 145, 123));
@@ -269,7 +270,6 @@ class landingMain extends JFrame implements ActionListener
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {
-
                     currentPanelDimension = getSize();
                     if((currentPanelDimension.width != onePanelDimension.width) || (currentPanelDimension.height != onePanelDimension.height))
                     {

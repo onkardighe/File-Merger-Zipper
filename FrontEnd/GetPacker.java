@@ -6,12 +6,11 @@ import javax.swing.border.*;
 import java.io.*;
 import javax.swing.filechooser.*;
 
-
 // Getting packer source folder and destination
 public class GetPacker extends JPanel
 {
     JFrame mainFrameObj;
-    JPanel panelObj, viewerPanelObj, buttonPanel;
+    JPanel menuPanelObj, panelObj, viewerPanelObj, buttonPanel;
     static RoundedPanel proceedButtonPanel;
     JFileChooser fileChooser, destChooser;
     File sourceFolder;
@@ -27,6 +26,7 @@ public class GetPacker extends JPanel
     JScrollPane scroll;
     private static JTextField folderName = null;
     private static JButton destinationPath;
+    JProgressBar progressBarMenu, progressBarTwo, progressBarThree;
 
 
     String data;
@@ -321,6 +321,7 @@ public class GetPacker extends JPanel
                         }
                     }
 
+                    scroll.update(scroll.getGraphics());
                 }
             }
         );
@@ -408,6 +409,7 @@ public class GetPacker extends JPanel
                         {
                             addDestFileChooser();
                             selectionObj.proceedToPack(destFolder);
+                            runProgressBar(1);
                             JOptionPane.showMessageDialog(mainFrameObj, "Successfully Done !!", "Successful", JOptionPane.PLAIN_MESSAGE, null);
                             openOutputFolder(destFolder);
                         }
@@ -415,14 +417,83 @@ public class GetPacker extends JPanel
                     else
                     {
                         selectionObj.proceedToPack(destFolder);
+                        runProgressBar(1);
                         JOptionPane.showMessageDialog(mainFrameObj, "Successfully Done !!", "Successful", JOptionPane.PLAIN_MESSAGE, null);
                         openOutputFolder(destFolder);
                     }
-                };
+                }  
             }
         );
     }
 
+    // Adding ProgressBar
+    public  void addProgressBar()
+    {
+        progressBarMenu = new JProgressBar();
+        progressBarMenu.setBounds(0, 0, 350, 2);
+        progressBarMenu.setOpaque(true);
+        progressBarMenu.setBackground(menuPanelObj.getBackground());
+        menuPanelObj.add(progressBarMenu);
+        
+        progressBarTwo = new JProgressBar();
+        progressBarTwo.setBounds(0, 50, 350, 2);
+        progressBarTwo.setOpaque(true);
+        progressBarTwo.setBackground(panelObj.getBackground());
+        panelObj.add(progressBarTwo);
+
+        progressBarThree = new JProgressBar();
+        progressBarThree.setBounds(0, 50, 350, 2);
+        progressBarThree.setOpaque(true);
+        progressBarThree.setBackground(viewerPanelObj.getBackground());
+        viewerPanelObj.add(progressBarThree);
+
+        // Settign Visibility OFF
+        progressBarMenu.setVisible(false);
+        progressBarTwo.setVisible(false);
+        progressBarThree.setVisible(false);
+    }
+    public void runProgressBar(int sec)
+    {
+
+        progressBarMenu.setVisible(true);
+        progressBarTwo.setVisible(true);
+        progressBarThree.setVisible(true);
+
+        try {
+            for(int i = 0; i <=300; i++)
+            {
+                if(i <= 100)
+                {
+                    progressBarMenu.update(progressBarMenu.getGraphics());
+                    progressBarMenu.setValue(i%100+1);
+                }
+                else if((i>100) && (i <= 200))
+                {
+                    progressBarTwo.update(progressBarTwo.getGraphics());
+                    progressBarTwo.setValue(i%100+1);
+                }
+                else
+                {
+                    progressBarThree.update(progressBarThree.getGraphics());
+                    progressBarThree.setValue(i%100+1);
+                }
+                
+                Thread.sleep(sec * 3);            
+            }
+        }
+        catch (Exception e) {
+        }
+
+        progressBarMenu.setValue(0);
+        progressBarTwo.setValue(0);
+        progressBarThree.setValue(0);
+
+        progressBarMenu.setVisible(false);
+        progressBarTwo.setVisible(false);
+        progressBarThree.setVisible(false);
+    }
+
+    
     private void openOutputFolder(File f)
     {
         try 
@@ -624,14 +695,16 @@ public class GetPacker extends JPanel
     }
     
     // Constructor
-    GetPacker(JFrame mainFrame, JPanel packerPanelObj, JPanel viewerPanel) 
+    GetPacker(JFrame mainFrame,JPanel menuPanel, JPanel packerPanelObj, JPanel viewerPanel) 
     {
         mainFrameObj = mainFrame;
+        menuPanelObj = menuPanel;
         panelObj = packerPanelObj;
         viewerPanelObj = viewerPanel;
         setBounds(30,100,290,455);
         setLayout(null);
         getFonts(); 
+        addProgressBar();
     }
 }
 

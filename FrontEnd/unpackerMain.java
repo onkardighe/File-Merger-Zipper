@@ -1,6 +1,4 @@
 import java.io.*;
-import java.lang.*;
-import javax.swing.*;
 import javax.swing.JFileChooser;
 
 public class unpackerMain 
@@ -42,7 +40,6 @@ public class unpackerMain
     // Function to Unpack Files 
     private void unpackFile(File srcFile) throws Exception
     {
-        int inputFileSize = (int)srcFile.length();
         BufferedReader reader = new BufferedReader(new FileReader(srcFile));
 
         String fileString = "";
@@ -51,7 +48,6 @@ public class unpackerMain
  
         for(int i = 0; i <(int)srcFile.length(); i++)
         {
-            char character = (char)headerArr[i];
             // Typecasting from Binary to character & then stored in String
             fileString = fileString+(char)headerArr[i];
 
@@ -63,7 +59,8 @@ public class unpackerMain
             FileAttributes fileHeaderObj = headerUnpack(fileString,offset);
             fileUnpack(fileString, fileHeaderObj, offset+100);
             offset = offset + (100+fileHeaderObj.fileSize);
-           }
+        }
+        reader.close();
 
     }
 

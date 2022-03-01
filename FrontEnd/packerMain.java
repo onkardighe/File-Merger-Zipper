@@ -36,7 +36,6 @@ public class packerMain {
         
             fobj.createNewFile();
             BufferedWriter buffer = new BufferedWriter(new FileWriter(fobj));
-            // /////////////////////////////////// WRITE CODE FOR IF FOLDER IS EMPTY i.e. srcFile.size() == 0
             
             for(int i = 0; i < srcFile.size(); i++)
             {
@@ -50,7 +49,7 @@ public class packerMain {
                     }
                 }
             }
-    
+
             // ziping file
             ZipFile(fobj);
         }
