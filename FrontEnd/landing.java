@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 public class landing {
@@ -19,7 +21,7 @@ class landingMain extends JFrame implements ActionListener
     Dimension threePanelDimension = new Dimension(1050,660);
     Dimension currentPanelDimension;
 
-    JButton menuButton;
+    JButton menuButton, closeButton;
 
     JPanel menuHeaderPanelObj = new JPanel();
     JPanel packerHeaderPanelObj = new JPanel();
@@ -30,7 +32,7 @@ class landingMain extends JFrame implements ActionListener
     JPanel proceedButtonPanel;
     JPanel menuPanelPack,menuPanelUnpack,menuPanelRecents,menuPanelSettings;
 
-    private ImageIcon menuIcon, menuPackIcon,menuUnpackIcon, recentsIcon, settingsIcon;
+    private ImageIcon menuIcon, menuPackIcon,menuUnpackIcon, recentsIcon, settingsIcon, closeIcon;
 
     JLabel menuHeaderLabel, packerHeaderLabel;
     Font font;
@@ -188,6 +190,7 @@ class landingMain extends JFrame implements ActionListener
     }
 
     private void addIcons() {
+        //Menu Icon
         menuIcon = new ImageIcon("assets/menuIcon.png");
         Image menuImg = menuIcon.getImage();
         menuImg = menuImg.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
@@ -195,6 +198,15 @@ class landingMain extends JFrame implements ActionListener
         menuButton = addIconButtons(menuIcon);
         menuButton.setBounds(20, 5, 40, 40);
         menuHeaderPanelObj.add(menuButton);
+
+        // Close Icon Button
+        closeIcon = new ImageIcon("assets/closeIcon.png");
+        Image closeImg = closeIcon.getImage();
+        closeImg = closeImg.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        closeIcon = new ImageIcon(closeImg);
+        closeButton =  addIconButtons(closeIcon);
+        closeButton.setBounds(310, 15, 20, 20);
+        menuHeaderPanelObj.add(closeButton);
 
         //Pack menu button
         menuPackIcon = new ImageIcon("assets/packIcon.png");
@@ -264,14 +276,16 @@ class landingMain extends JFrame implements ActionListener
 
     private void addButtonActions()
     {
+        currentPanelDimension = getSize();
+        
+        
         // Menu pack Icon Button
         menuPackIconButton.addActionListener
         (
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {
-                    currentPanelDimension = getSize();
-                    if((currentPanelDimension.width != onePanelDimension.width) || (currentPanelDimension.height != onePanelDimension.height))
+                    if((currentPanelDimension.width != onePanelDimension.width) && (currentPanelDimension.height != onePanelDimension.height))
                     {
                         setSize(350,660);
                     }
@@ -279,6 +293,7 @@ class landingMain extends JFrame implements ActionListener
                     {
                         setSize(700,660);
                     }
+                    addCloseButton();
                     setLocationRelativeTo(null);
                 }
             }
@@ -291,6 +306,7 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    addCloseButton();
                     setLocationRelativeTo(null);
                 }
             }
@@ -303,6 +319,7 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    addCloseButton();
                     setLocationRelativeTo(null);
                 }
             }
@@ -315,11 +332,48 @@ class landingMain extends JFrame implements ActionListener
             {
                 public void actionPerformed(ActionEvent e) {
                     setSize(700,660);
+                    addCloseButton();
                     setLocationRelativeTo(null);
                 }
             }
         );
 
+        this.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent c)
+            {
+                // System.out.println(currentPanelDimension.height);
+                // System.out.println(currentPanelDimension.width);
+                addCloseButton();
+            }
+        });
+
+    }
+
+    public void addCloseButton()
+    {
+        currentPanelDimension = this.getSize();
+        // System.out.println(currentPanelDimension.height);
+        // System.out.println(currentPanelDimension.width);
+        
+        // one Panel
+        if((currentPanelDimension.width == onePanelDimension.width) && (currentPanelDimension.height == onePanelDimension.height))
+        {
+            menuHeaderPanelObj.add(closeButton);
+            closeButton.setVisible(true);
+            
+        }
+        else if((currentPanelDimension.width == twoPanelDimension.width) && (currentPanelDimension.height == twoPanelDimension.height))
+        {
+            menuHeaderPanelObj.remove(closeButton);
+            packerHeaderPanelObj.add(closeButton);
+            closeButton.setVisible(true);
+        }
+        else
+        {
+            packerHeaderPanelObj.remove(closeButton);
+            viewerHeaderPanel.add(closeButton);
+            closeButton.setVisible(true);
+        }
     }
 
     landingMain() throws Exception {
