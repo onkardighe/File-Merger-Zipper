@@ -9,6 +9,7 @@ import javax.swing.filechooser.*;
 // Getting packer source folder and destination
 public class GetPacker extends JPanel
 {
+    ArrayList<String> validExtnsions  = new ArrayList<>();
     JFrame mainFrameObj;
     JPanel menuPanelObj, panelObj, viewerPanelObj, buttonPanel;
     static RoundedPanel proceedButtonPanel;
@@ -181,10 +182,19 @@ public class GetPacker extends JPanel
 
     }
 
+    private void getExtensions()
+    {
+        String[] extens  = {".txt", ".py", ".cpp", ".java", ".c", ".js", ".php", ".css", ".html", ".xml", ".yml"};
+        for(String ext : extens)
+        {
+            validExtnsions.add(ext);
+        }
+    }
     // Adding fileList using JTable on JPanel
     private void addFileList(File f)
     {   
         removePreviousButtonList();
+        getExtensions();
 
         innerFiles = f.listFiles();  
 
@@ -208,6 +218,12 @@ public class GetPacker extends JPanel
 
             if(file.isFile())
             {
+                String fileName  = file.getName();
+                String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+                if(!validExtnsions.contains(fileExtension))
+                {
+                    continue;
+                }
                 JButton fButton = addFileButton(file, i);
                 buttonList[i] = fButton;
                 i++;
