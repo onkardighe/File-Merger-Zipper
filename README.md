@@ -2,7 +2,7 @@
 
 # File-Merger-Zipper
 
-It's a project  which packs &amp; Unpacks files from a folder into one file(with Encryption). 
+An interface which merges multiple files to one file with (20-25 % size Compression)
 
 </div>
 
